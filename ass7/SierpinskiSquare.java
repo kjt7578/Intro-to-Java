@@ -17,9 +17,9 @@ public class SierpinskiSquare {
      * @param length the side length of the square
      * @return the half diagonal length
      */
-    public static double halfDiagLength(double length) {
-      return (Math.sqrt(2) * length) / 2;
-    }
+  public static double halfDiagLength(double length) {
+      return length * Math.sqrt(2) / 2.0;
+  }
 
     /**
      * 1. Sets the pen color to be black.
@@ -31,10 +31,10 @@ public class SierpinskiSquare {
      * @param length the side length of the square.
      */
     public static void drawDarkSquare(double length) {
-      
+
       StdDraw.setPenColor(Color.black);
-      double [] x = {0.5-length,0.5, 0.5+length, 0.5};
-      double [] y = {0.5,0.5+length,0.5,0.5-length};
+      double [] x = {0.5-halfDiagLength(length),0.5, 0.5+halfDiagLength(length), 0.5};
+      double [] y = {0.5,0.5+halfDiagLength(length),0.5,0.5-halfDiagLength(length)};
       StdDraw.filledPolygon(x, y);      
     }
 
@@ -47,11 +47,10 @@ public class SierpinskiSquare {
      *
      * @param length the side length of the square
      */
-    public static void drawLightSquare(double length) {
-      StdDraw.setPenColor(Color.white);
-      StdDraw.filledSquare(0.5, 0.5, length);
-        
-    }
+  public static void drawLightSquare(double length) {
+      StdDraw.setPenColor(Color.WHITE);
+      StdDraw.filledSquare(0.5, 0.5, length / 2); // 중심을 기준으로 사각형 그리기
+  }
 
     /**
      * Draws a Sierpinski square of order n, such that the largest filled
@@ -61,19 +60,20 @@ public class SierpinskiSquare {
      * @param n the highest order to draw
      * @param length the side length of the square
      */
-    public static void sierpinski(int curr, int n, double length) {
-	// WRITE YOUR CODE HERE
+  public static void sierpinski(int curr, int n, double length) {
       if (curr > n) return;
 
-      if (curr % 2 != 0) { // odd
-        drawLightSquare(length);
-      } else { // even
-        drawDarkSquare(length);
-        length = length / 2;
+      if (curr % 2 == 0) { // 짝수일 때는 회색 사각형 그리기
+          drawDarkSquare(length);
+      } else { // 홀수일 때는 흰색 사각형 그리기
+          drawLightSquare(length);
       }
 
-      sierpinski(curr + 1, n, length);
-    }
+      // 다음 순서의 사각형을 그릴 크기 계산 (대각선의 절반으로 줄어듦)
+      double newLength = length / Math.sqrt(2);
+
+      sierpinski(curr + 1, n, newLength); // 재귀 호출
+  }
 
     /**
      * Takes an integer command-line argument n,
@@ -83,10 +83,12 @@ public class SierpinskiSquare {
      *
      * @param args command-line arguments
      */
-    public static void main(String[] args) {
-      int n = Integer.parseInt(args[0]);
-      StdDraw.setXscale(0, 1);
-      StdDraw.setYscale(0, 1);
-      sierpinski(0, n, 0.5); // 여기서 length를 0.5로 설정합니다.
-    }
+  public static void main(String[] args) {
+      int n = Integer.parseInt(args[0]); // 순서 `n`을 명령행 인자로부터 읽기
+      StdDraw.setXscale(0, 1); // X 축 범위 설정
+      StdDraw.setYscale(0, 1); // Y 축 범위 설정
+
+      double initialLength = 0.5 * Math.sqrt(2); // 초기 사각형의 한 변의 길이 계산
+      sierpinski(0, n, initialLength); // Sierpinski Square 그리기
+  }
 }
