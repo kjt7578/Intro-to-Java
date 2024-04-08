@@ -19,7 +19,8 @@ public class SierpinskiSquare {
      (don't rationalize your denominator!)
      */
   public static double halfDiagLength(double length) {
-      return length * Math.sqrt(2) / 2.0;
+      //return length * Math.sqrt(2) / 2.0;
+    return length / Math.sqrt(2);
   }
 
     /**
@@ -51,7 +52,7 @@ public class SierpinskiSquare {
      */
   public static void drawLightSquare(double length) {
       StdDraw.setPenColor(Color.WHITE);
-      StdDraw.filledSquare(0.5, 0.5, length / 2);
+      StdDraw.filledSquare(0.5, 0.5, length / 2.0);
   }
 
     /**
@@ -89,6 +90,7 @@ public class SierpinskiSquare {
       StdDraw.setXscale(0, 1);
       StdDraw.setYscale(0, 1);
 
-      sierpinski(0, n, halfDiagLength(1));
+      double initialLength = Math.sqrt(2) / 2;
+      sierpinski(0, n, initialLength);
   }
 }
