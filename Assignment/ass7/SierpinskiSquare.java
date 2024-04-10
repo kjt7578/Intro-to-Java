@@ -19,7 +19,7 @@ public class SierpinskiSquare {
      (don't rationalize your denominator!)
      */
   public static double halfDiagLength(double length) {
-      return length * Math.sqrt(2) / 2.0;
+      return length / Math.sqrt(2);
   }
 
     /**
@@ -34,9 +34,14 @@ public class SierpinskiSquare {
     public static void drawDarkSquare(double length) {
 
       StdDraw.setPenColor(Color.black);
-      System.out.println(halfDiagLength(length));
-      double [] x = {0.5-halfDiagLength(length),0.5, 0.5+halfDiagLength(length), 0.5};
-      double [] y = {0.5,0.5+halfDiagLength(length),0.5,0.5-halfDiagLength(length)};
+      //System.out.println(halfDiagLength(length));
+
+      double [] x = {0.5,                       0.5-halfDiagLength(length),0.5,0.5+halfDiagLength(length)};
+      double [] y = {0.5+halfDiagLength(length),0.5 ,                      0.5-halfDiagLength(length),0.5};
+
+
+
+      
       StdDraw.filledPolygon(x, y);      
     }
 
