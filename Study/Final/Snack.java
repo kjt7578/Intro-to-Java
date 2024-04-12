@@ -24,6 +24,7 @@ public class Snack{
     }
     else{
       left = left - eatten;
+      this.amount = left;
       System.out.println("You ate " + eatten + " and " + left + " left");
     return left;
     }
@@ -36,6 +37,7 @@ public class Snack{
     System.out.println("How many you want to eat?");
     int eatten = StdIn.readInt();
     SunChip.amount = SunChip.eatten(eatten);
+    System.out.println(SunChip.toString());
       
     }
 }
