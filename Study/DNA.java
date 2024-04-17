@@ -27,11 +27,9 @@ public class DNA {
 
     // These two instance variables are initialized and populated by 
     // createDatabaseOfProfiles() and readSTRsOfInterest()
-    private Profile[] database;       
-    // Holds all of the profile objects.
-    private String[]  STRsOfInterest; 
-    // Holds all of the STRs as Strings we are interested in looking for.
-    // These STRs are going to be used to process the DNA of everyone in the database.
+    private Profile[] database;       // Holds all of the profile objects.
+    private String[]  STRsOfInterest; // Holds all of the STRs as Strings we are interested in looking for.
+                                      // These STRs are going to be used to process the DNA of everyone in the database.
 
     /**
      * Initialize the array of Profile objects and the STRs of interest.
@@ -42,10 +40,8 @@ public class DNA {
     public DNA (String databaseFile, String STRsFile) {
 
         /*** DO NOT EDIT ***/
-        createDatabaseOfProfiles(databaseFile); 
-        // Calls createDatabase method to initialize the database array
-        readSTRsOfInterest(STRsFile);           
-        // Calls readAllSTRs method to initialize the allSTRs array
+        createDatabaseOfProfiles(databaseFile); // Calls createDatabase method to initialize the database array
+        readSTRsOfInterest(STRsFile);           // Calls readAllSTRs method to initialize the allSTRs array
     }
 
     /**
@@ -74,29 +70,13 @@ public class DNA {
      * 
      * 
      * @param filename The input file containing the person's name and DNA sequences
-     // Instance variables refer to a Person
-     private String name;      // name
-     private String sequence1; // DNA sequence from one parent
-     private String sequence2; // DNA sequence from the other parent 
-     private STR[]  S1_STRs;   // array of STRs found in sequence1
-     private STR[]  S2_STRs;   // array of STRs found in sequence2
      */
-
-    // profiles.txt 파일을 불러와 그안에있는 모든 데이터를, 데이터 베이스 배열의 i 번째에 새로운 profile 클래스 선언.
     public void createDatabaseOfProfiles (String filename) {
-        StdIn.setFile(filename); // DO NOT remove this line, keep it as the first line in the method
-        // YOUR CODE HERE
-      int n = StdIn.readInt();
 
-      if (this.database == null) {
-        this.database = new Profile[n];
-      }
-      for(int i = 0; i < n; i++){
-        String name = StdIn.readString();
-        String sequence1 = StdIn.readString();
-        String sequence2 = StdIn.readString();
-        database[i] = new Profile(name,  null, null, sequence1, sequence2);
-      }
+        StdIn.setFile(filename); // DO NOT remove this line, keep it as the first line in the method.
+
+        // YOUR CODE HERE
+
     }
 
     /**
@@ -120,17 +100,12 @@ public class DNA {
      * 
      * @param filename The input file containing all the STRs
      */
-  
-    //allSTRs0.txt 파일을 읽어와 STRsOfInterest배열에 STR을 추가
     public void readSTRsOfInterest (String filename) {
+
         StdIn.setFile(filename); // DO NOT remove this line, keep as the first line in the method.
+
         // YOUR CODE HERE
 
-      int numSTRs = StdIn.readInt();
-      this.STRsOfInterest = new String[numSTRs];
-      for (int i = 0; i < numSTRs; i++) {
-          this.STRsOfInterest[i] = StdIn.readString();
-      }
     }
 
     /**
@@ -151,14 +126,14 @@ public class DNA {
      * @param filename The input file for the unknown DNA sequence
      * @return         Returns a Profile object for the unknown DNA sequence
      */
-  public Profile createUnknownProfile(String filename) {
-      StdIn.setFile(filename);
-      String sequence1 = StdIn.readString();
-      String sequence2 = StdIn.readString();
+    public Profile createUnknownProfile (String filename) {
 
-      Profile unknownProfile = new Profile("Unknown", null, null, sequence1, sequence2);
-      return unknownProfile;
-  }
+	    StdIn.setFile(filename); // DO NOT remove this line, keep as the first line in the method.
+
+        // YOUR CODE HERE
+
+        return null; // update return statement with Profile object
+    }
 
     /**
      * Given a DNA sequence and a singular STR,
@@ -178,29 +153,13 @@ public class DNA {
      * @param STR      The STR (String) to look for in the DNA sequence
      * @return         The STR object with the name and longest number of repeats
      */
-  public STR findSTRInSequence(String sequence, String STR) {
-      int repeats = 0;
-      int longestRepeats = 0;
-    
-    if(STR.length() > sequence.length()){
-      return null;
+    public STR findSTRInSequence (String sequence,String STR ) {
+        
+        // YOUR CODE HERE
+
+        return null; // update return statement with STR object
     }
 
-      for (int i = 0; i <= sequence.length() - STR.length(); i = i) {
-          if (sequence.substring(i, i + STR.length()).equals(STR)) {
-              repeats++;
-            if(repeats > longestRepeats){
-              longestRepeats = repeats;
-              }
-            i+=(STR.length());
-            }
-          else if (!sequence.substring(i, i + STR.length()).equals(STR)){
-            repeats = 0;
-            i++;
-          }
-      }
-      return new STR(STR, longestRepeats);
-  }
     /**
      * Takes a profile and String[] and populates then adds the STRs[] to the profile.
      * 
@@ -213,18 +172,12 @@ public class DNA {
      * @param profile The profile of the that the method will compute the STRs array for
      * @param allSTRs The list of STRs to be looked for in the profiles DNA sequences
      */
-  public void createProfileSTRs(Profile profile, String[] allSTRs) {
-      STR[] S1_STRs = new STR[allSTRs.length];
-      STR[] S2_STRs = new STR[allSTRs.length];
+    public void createProfileSTRs ( Profile profile, String[] allSTRs ) {
 
-      for (int i = 0; i < allSTRs.length; i++) {
-          S1_STRs[i] = findSTRInSequence(profile.getSequence1(), allSTRs[i]);
-          S2_STRs[i] = findSTRInSequence(profile.getSequence2(), allSTRs[i]);
-      }
+        // YOUR CODE HERE
 
-      profile.setS1_STRs(S1_STRs);
-      profile.setS2_STRs(S2_STRs);
-  }
+    }
+
     /**
      * Creates and updates the STRs for each profile in the database.
      * 
@@ -233,12 +186,11 @@ public class DNA {
      * 
      * NOTEL use the createProfileSTRs method
      */
-  public void createDatabaseSTRs() {
-      for (int i = 0; i < database.length; i++) {
-          Profile profile = database[i];
-          createProfileSTRs(profile, STRsOfInterest);
-      }
-  }
+    public void createDatabaseSTRs() {
+
+        // YOUR CODE HERE
+
+    }
 
     /**
      * Compares two STR arrays to determines if they are identical.
@@ -258,15 +210,12 @@ public class DNA {
      * @param s2 STR array from another profile.
      * @return Returns true if the objects in the arrays are a complete match, otherwise false
      */
-  public boolean identicalSTRs(STR[] s1, STR[] s2) {
-      for (int i = 0; i < s1.length; i++) {
-          if (!s1[i].equals(s2[i])) {
-              return false;
-          }
-      }
+    public boolean identicalSTRs ( STR[] s1, STR[] s2 ) {
 
-      return true;
-  }
+        // YOUR CODE HERE
+
+        return false; // update return statement with correct boolean
+    }
 
     /**
      * Searches through the database for profiles whose S1 matches the unknownProfilesS1_STRs
@@ -283,19 +232,12 @@ public class DNA {
      * @return                      Returns an ArrayList with all matching profile(s). It will return 
      *                              an empty ArrayList if no match is found.
      */
-  public ArrayList<Profile> findMatchingProfiles(STR[] unknownProfileS1_STRs) {
-      ArrayList<Profile> matchingProfiles = new ArrayList<>();
+    public ArrayList<Profile> findMatchingProfiles ( STR[] unknownProfileS1_STRs ) {
+        
+        // YOUR CODE HERE
 
-    for (int i = 0; i < database.length; i++) {
-        Profile profile = database[i];
-
-        if (identicalSTRs(profile.getS1_STRs(), unknownProfileS1_STRs)) {
-            matchingProfiles.add(profile);
-        }
+        return null; // update return statement with ArrayList
     }
-
-      return matchingProfiles;
-  }
 
     /**
      * A punnet square is a simple way of discovering all of the potential combinations of 
@@ -367,60 +309,62 @@ public class DNA {
 
         // Uses identicalSTRs to look for match between four different outcomes of
         // placements (Refer to depiction) with each pairing being either parent 1 or 2
-      for (int i = 0; i < database.length; i++) {
-          if (identicalSTRs(database[i].getS2_STRs(), S1_STRs)) {
-              possibleParent2.add(database[i]);
-          }
-          if (identicalSTRs(database[i].getS1_STRs(), S2_STRs)) {
-               possibleParent1.add(database[i]);
-          }
-          if (identicalSTRs(database[i].getS1_STRs(), S1_STRs)) {
-               possibleParent2.add(database[i]);
-          }
-          if (identicalSTRs(database[i].getS2_STRs(), S2_STRs)) {
-               possibleParent1.add(database[i]);
-          }
-      }
+        for (int i = 0; i < database.length; i++) {
+            if (identicalSTRs(database[i].getS2_STRs(), S1_STRs)) {
+                possibleParent1.add(database[i]);
+            }
+            if (identicalSTRs(database[i].getS1_STRs(), S2_STRs)) {
+                 possibleParent2.add(database[i]);
+            }
+            if (identicalSTRs(database[i].getS1_STRs(), S1_STRs)) {
+                 possibleParent1.add(database[i]);
+            }
+            if (identicalSTRs(database[i].getS2_STRs(), S2_STRs)) {
+                 possibleParent2.add(database[i]);
+            }
+        }
 
-      ArrayList<Profile> parentList = new ArrayList<>(); // List to hold just the
-      // parents (in pairing) of who the parents could be
-      // based on the pairings of the punnet square
+        ArrayList<Profile> parentList = new ArrayList<>(); // List to hold just the
+        // parents (in pairing) of who the parents could be
+        // based on the pairings of the punnet square
 
-      // Loops through both parents list as there can be multiple matchings
-      for (int i = 0; i < possibleParent1.size(); i++) {
-          for (int j = 0; j < possibleParent2.size(); j++) {
-              // Using punnet square method to check STR matchings between parents from
-              // respective lists to
-              // ensure they are truly possible parents the match based on the combination
-              // of STRs
-              // If the are it adds them to the final list
+        // Loops through both parents list as there can be multiple matchings
+        for (int i = 0; i < possibleParent1.size(); i++) {
+            for (int j = 0; j < possibleParent2.size(); j++) {
+                // Using punnet square method to check STR matchings between parents from
+                // respective lists to
+                // ensure they are truly possible parents the match based on the combination
+                // of STRs
+                // If the are it adds them to the final list
 
-              // Ensure the parent isn't the same person
-
-                    if (!possibleParent1.get(i).equals(possibleParent2.get(j))) {
-                        if (punnetSquare(possibleParent2.get(j).getS2_STRs(), S1_STRs,
-                                possibleParent1.get(i).getS2_STRs(), S2_STRs)) {
-                            parentList.add(possibleParent1.get(i));
-                            parentList.add(possibleParent2.get(j));
-                        } else if (punnetSquare(possibleParent2.get(j).getS1_STRs(), S1_STRs,
-                                possibleParent1.get(i).getS1_STRs(), S2_STRs)) {
-                            parentList.add(possibleParent1.get(i));
-                            parentList.add(possibleParent2.get(j));
-                        } else if (punnetSquare(possibleParent2.get(j).getS2_STRs(), S2_STRs,
-                                possibleParent1.get(i).getS1_STRs(), S2_STRs)) {
-                            parentList.add(possibleParent1.get(i));
-                            parentList.add(possibleParent2.get(j));
-                        } else if (punnetSquare(possibleParent2.get(j).getS1_STRs(), S1_STRs,
-                                possibleParent1.get(i).getS2_STRs(), S2_STRs)) {
-                            parentList.add(possibleParent1.get(i));
-                            parentList.add(possibleParent2.get(j));
-                        }
+                // Ensure the parent isn't the same person
+                if (!possibleParent1.get(p1).equals(possibleParent2.get(p2)) ) {
+                    
+                    if (punnetSquare(possibleParent2.get(p2).getS2_STRs(), S2_STRs,
+                            possibleParent1.get(p1).getS2_STRs(), S1_STRs)) {
+                        parentList.add(possibleParent1.get(p1));
+                        parentList.add(possibleParent2.get(p2));
+                    }
+                    else if (punnetSquare(possibleParent2.get(p2).getS1_STRs(), S1_STRs,
+                            possibleParent1.get(p1).getS1_STRs(), S1_STRs)) {
+                        parentList.add(possibleParent1.get(p1));
+                        parentList.add(possibleParent2.get(p2));
+                    }
+                    else if (punnetSquare(possibleParent2.get(p2).getS2_STRs(), S2_STRs,
+                            possibleParent1.get(p1).getS2_STRs(), S2_STRs)) {
+                        parentList.add(possibleParent1.get(p1));
+                        parentList.add(possibleParent2.get(p2));
+                    }
+                    else if (punnetSquare(possibleParent2.get(p2).getS1_STRs(), S2_STRs,
+                            possibleParent1.get(p1).getS1_STRs(), S1_STRs)) {
+                        parentList.add(possibleParent1.get(p1));
+                        parentList.add(possibleParent2.get(p2));
                     }
                 }
             }
-
-      return parentList; // Final list of parents in pairing being returned
-      }
+        }
+        return parentList; // Final list of parents in pairing being returned
+    }
 
 
     /**
