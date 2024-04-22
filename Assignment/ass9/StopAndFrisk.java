@@ -63,29 +63,38 @@ public class StopAndFrisk {
         // WRITE YOUR CODE HERE
       //일단 각 한 줄에 recordEntries 배열을 생성해서 그 줄의 단어를 ','로 구별 한 후 하나씩 넣기
       //거기에서 하나씩 뽑아 new SFRecord 클래스에 추가
-      for(int i = 1; i < csvFile.length(); i++){
-        String[] recordEntries = StdIn.readLine().split(",");
-        String year = recordEntries[0];  //Why is not int?
-        String description = recordEntries[2];
-        String gender = recordEntries[52];
-        String race = recordEntries[66];
-        String location = recordEntries[71];
-        Boolean arrested = recordEntries[13].equals("Y");
-        Boolean frisked = recordEntries[16].equals("Y");
-        SFRecord record = new SFRecord(description, arrested, frisked, gender, race, location);
+      // Read each line of the file until there are no more lines
+      while (!StdIn.isEmpty()) {
+          // Read a line and split it into parts using comma as delimiter
+          String[] recordEntries = StdIn.readLine().split(",");
 
-        /*
-        if(SFYear.getDatabase().contains(year)){
-          SFYear.getDatabase().get(year).addRecord(record);
-        }
-        else{
-          SFYear newSFYear = new SFYear(year);
-          newSFYear.addRecord(record);
-          SFYear.getDatabase().add(newSFYear);
-        }
-        */
+          // Extract relevant information from the recordEntries array
+          int year = Integer.parseInt(recordEntries[0]); // Year is the first entry
+          String description = recordEntries[2]; // Description is the third entry
+          String gender = recordEntries[52]; // Gender is the 53rd entry
+          boolean arrested = recordEntries[13].equals("Y"); // Arrested is the 14th entry
+          boolean frisked = recordEntries[16].equals("Y"); // Frisked is the 17th entry
+          String race = recordEntries[66]; // Race is the 67th entry
+          String location = recordEntries[71]; // Location is the 72nd entry
+
+          // Create a new SFRecord object with the extracted information
+          SFRecord newRecord = new SFRecord(description, arrested, frisked, gender, race, location);
+
+          boolean yearFound = false;
+          for (SFYear sfYear : database) {
+              if (sfYear.getcurrentYear() == year) {
+                  sfYear.addRecord(newRecord);
+                  yearFound = true;
+                  break;
+              }
+          }
+
+          if (!yearFound) {
+              SFYear newYear = new SFYear(year);
+              newYear.addRecord(newRecord);
+              database.add(newYear);
+          }
       }
-
     }
 
     /**
@@ -96,13 +105,34 @@ public class StopAndFrisk {
      * @param race we are only interested in the records of stops of people of race. 
      * @return an ArrayList containing all stop and frisk records for people of the 
      * parameters race and year.
+
+     Access the specific year you are looking for in the database array.
+     Traverse the records in that year and keep track of the ones that match the specific race we are looking for. 
+     If a record matches the specific race criteria, store this record into the ArrayList from step (1).
+     Return new ArrayList.
+     Suggested getter methods to use:
+
+     getCurrentYear()
+     getRace()
+     getRecordsForYear()
      */
 
-    public ArrayList<SFRecord> populationStopped ( int year, String race ) {
+  public ArrayList<SFRecord> populationStopped(int year, String race) {
+    ArrayList<SFRecord> result = new ArrayList<>();
 
-        // WRITE YOUR CODE HERE
-	return null; // update the return value
+    for (SFYear sfYear : database){
+      if(sfYear.getcurrentYear() == year){
+        ArrayList<SFRecord> records = sfYear.getRecordsForYear();
+        for (SFRecord record : records){
+            if(record.getRace().equals(race)){
+                result.add(record);
+            }
+        }
+      }
     }
+
+      return result;
+  }
 
     /**
      * This method computes the percentage of records where the person was frisked and the
@@ -111,12 +141,37 @@ public class StopAndFrisk {
      * @param year we are only interested in the records of year.
      * @return the percent of the population that were frisked and the percent that
      *         were arrested.
+     Create two counters, one for the population frisked and the other for the population arrested.
+     Access the specific year you are looking for in the database array.
+     Traverse the records in that year updating the counters.
+     Utilize getFrisked() and getArrested() to check if the person was frisked and/or arrested.
+     Compute the percentage once all databases has been traversed.
+     percentage = counter / number of records for the year * 100;
+     Create a 1D output array that contains two values (in the following order):
+     output[0]: the percentage of the population that frisked
+     output[1]: the percentage of the population that arrested
+     Return the output array.
      */
     public double[] friskedVSArrested ( int year ) {
-        
         // WRITE YOUR CODE HERE
+      int total = 0;
+      int frisked = 0;
+      int arrested = 0;
+      for(SFYear sfYear : database){
+        if(sfYear.getcurrentYear() == year){
+          ArrayList<SFRecord> list = sfYear.getRecordsForYear();
+          for(SFRecord record : list){
+            total++;
+            if(record.getFrisked())  frisked++;
+            if(record.getArrested()) arrested++;
+          }
+        }
+      }
+      double [] result = new double [2];
+      result[0] = (double) frisked / total * 100;
+      result[1] = (double) arrested / total * 100;
 
-        return null; // update the return value
+        return result; // update the return value
     }
 
     /**
@@ -127,12 +182,63 @@ public class StopAndFrisk {
      * @param year we are only interested in the records of year.
      * @return a 2D array of percent of number of White and Black females
      *         versus the number of White and Black males.
+     
+     Access the specific year you are looking for in the database array.
+     Create counters to keep track of the number of black people who were stopped, the number of white people who were stopped, as well as the number of black men who were stopped, the number of white men who were stopped, the number of black women who were stopped, and the number of white women who were stopped.
+     Utilize the SFRecord getRace() method to identify a person’s race
+     If the race equals “B” (Black), increase the Black population count.
+     If the race equals “W” (White), increase the White population count.
+     Utilize the SFRecord getGender() method to identify a person’s gender
+     If the Arraylist contains “F” (Female), increase the Female count, accordingly.
+     If the Arraylist contains “M” (Male), increase the Male count, accordingly.
+     Create a 2D array of 2 rows and 3 columns containing the information in the table below. For example, to compute the Black Female Percentage use:
+     percentage = (number of black females / number of black people) * 0.5 * 100
+
+     Return the 2D resulting array
      */
     public double[][] genderBias ( int year ) {
-
         // WRITE YOUR CODE HERE
+      int total = 0;
+      int blackf = 0, blackm = 0, whitef = 0, whitem = 0, female = 0, male = 0, black = 0, white = 0;
+      for(SFYear sfYear : database){
+        if(sfYear.getcurrentYear() == year){
+          ArrayList<SFRecord> list = sfYear.getRecordsForYear();
+          for(SFRecord record : list){
+            total++;
+            if(record.getGender() == "F"){
+              female++;
+              if(record.getRace() == "B"){
+                blackf++;
+                  black++;
+              }
+              if(record.getRace() == "W"){
+                whitef++;
+                white++;
+              }
+            }
+            if(record.getGender() == "M"){
+              male++;
+              if(record.getRace() == "B"){
+                  black++;
+                blackm++;
+              }
+              if(record.getRace() == "W"){
+                whitem++;
+                white++;
+              }
+            }
+          }
+        }
+      }
+      double [][] result = new double [2][3];
+      result[0][0] = (double) blackf / black * 0.5 * 100;
+      result[0][1] = (double) blackm / black * 0.5 * 100;
+      result[1][0] = (double) whitef / white * 0.5 * 100;
+      result[1][1] = (double) whitem / white * 0.5 * 100;
+      result[1][2] = (double) female / total * 100;
+      result[0][2] = (double) male / total * 100;
 
-        return null; // update the return value
+        return result; // update the return value
     }
 
     /**
