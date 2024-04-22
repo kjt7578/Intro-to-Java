@@ -16,7 +16,6 @@ public class StopAndFrisk {
 
         StdIn.setFile(csvFile);
         StdIn.readLine();
-        // WRITE YOUR CODE HERE
       while (!StdIn.isEmpty()) {
           String[] recordEntries = StdIn.readLine().split(",");
 
@@ -119,7 +118,7 @@ public class StopAndFrisk {
       result[1][1] = ((double) whitem / white * 0.5 * 100);
       result[0][2] = result[0][0] + result[0][1];
       result[1][2] = result[1][0] + result[1][1];
-  
+
       return result;
     }
 
@@ -148,26 +147,11 @@ public class StopAndFrisk {
 
         double y1 = (double)ct1 / total1 * 100;
         double y2 = (double)ct2 / total2 * 100;
-        result = y1 - y2;
-      
-        if (year1 > year2){
-          result = result * -1;
-        }
-        else if (year1 == year2){
-          result = 0;
-        }
-	return result;
+        result = y2 - y1;
+
+  return result;
     }
 
-    /**
-     * This method outputs the NYC borough where the most amount of stops 
-     * occurred in a given year. This method will mainly analyze the five 
-     * following boroughs in New York City: Brooklyn, Manhattan, Bronx, 
-     * Queens, and Staten Island.
-     * 
-     * @param year we are only interested in the records of year.
-     * @return the borough with the greatest number of stops
-     */
     public String mostCommonBorough ( int year ) {
       int Brooklyn = 0, Manhattan = 0, Bronx = 0, Queens = 0, Staten_Island = 0;
       for(SFYear sfYear : database){
