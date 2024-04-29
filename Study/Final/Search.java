@@ -1,4 +1,21 @@
 import java.util.ArrayList;
+/*
+Big-O complexity chart
+O(log n), O(1) < O(n) < O(n log n) < O(n^2) < O(2^n) < O(n1)
+
+
+Sort        Best      Average      Worst
+Insertion   O(n)      O(n^2)       O(n^2)
+Selection   O(n^2)    O(n^2)       O(n^2)
+Merge       O(nlogn)  O(nlogn)     O(nlogn)
+
+            Search   
+Linear      O(N)
+Binary     O(log N)
+
+
+*/
+
 
 public class Search{
   public static void main(String[] args){
@@ -19,20 +36,6 @@ public class Search{
     binary_search(wordTBF, words, 0, n);  //log N
   }
 
-  public static void insertion_sort(ArrayList<String> words){
-    for(int i = 0; i < words.size(); i++){
-      for(int j = i; j > 0; j--){
-        if(words.get(j-1).compareTo(words.get(j)) > 0){
-          String temp = words.get(j-1);
-          words.set(j-1, words.get(j));
-          words.set(j, temp);
-        }
-        else
-          break;
-      }
-    }
-  }
-
   public static void selection_sort(ArrayList<String> words){
     for(int i = 0; i < words.size(); i++){
       int min = i;
@@ -44,6 +47,20 @@ public class Search{
       String temp = words.get(i);
       words.set(i, words.get(min));
       words.set(min, temp);
+    }
+  }
+  
+  public static void insertion_sort(ArrayList<String> words){
+    for(int i = 0; i < words.size(); i++){
+      for(int j = i; j > 0; j--){
+        if(words.get(j-1).compareTo(words.get(j)) > 0){
+          String temp = words.get(j-1);
+          words.set(j-1, words.get(j));
+          words.set(j, temp);
+        }
+        else
+          break;
+      }
     }
   }
 
