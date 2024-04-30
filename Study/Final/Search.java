@@ -12,7 +12,9 @@ Merge       O(nlogn)  O(nlogn)     O(nlogn)
             Search   
 Linear      O(N)
 Binary     O(log N)
-
+ㄴ mid = low + (hi - low) / 2;
+if(mid > target) hi =mid;
+if(mid < target) low = mid + 1;
 
 */
 
