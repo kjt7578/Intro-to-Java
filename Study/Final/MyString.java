@@ -18,7 +18,7 @@ public class MyString{
       System.out.println("Length of " + fruit[i] + ": " + length);
     }System.out.println();
 
-    System.out.println("chat chatAt(int i)");
+    System.out.println("char chatAt(int i)");
     for(int i = 0; i < fruit.length; i++){
       for(int j = 0; j < fruit[i].length(); j++){
         if(fruit[i].charAt(j) == 'a'){  // Should be ' ' because its comeparing with char
